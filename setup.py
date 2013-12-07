@@ -10,11 +10,11 @@ setup(
     author_email='bruno@renie.fr',
     description=('A plugin for using graphite-web with the cassandra-based '
                  'Cyanite storage backend'),
-    py_modules=['cyanite'],
+    py_modules=('cyanite',),
     zip_safe=False,
     include_package_data=True,
     platforms='any',
-    classifiers=[
+    classifiers=(
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators'
         'License :: OSI Approved :: BSD License',
@@ -22,5 +22,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Topic :: System :: Monitoring',
-    ],
+    ),
+    install_requires=(
+        'requests',
+    ),
 )
