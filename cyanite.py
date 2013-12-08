@@ -20,8 +20,7 @@ class CyaniteReader(object):
                                                 'from': start_time,
                                                 'to': end_time}).json()
         time_info = data['from'], data['to'], data['step']
-        values = [v['metric'] for v in data['data']]
-        return time_info, values
+        return time_info, data['series'][self.path]
 
     def get_intervals(self):
         # TODO use cyanite info
