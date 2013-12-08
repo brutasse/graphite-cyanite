@@ -16,6 +16,6 @@ In your graphite's ``local_settings.py``::
         'cyanite.CyaniteFinder',
     )
 
-    CYANITE_URL = 'http://server:port'
+    CYANITE_URL = 'http://host:port'
 
-Where ``server:port`` is the location of the Cyanite HTTP API.
+Where ``host:port`` is the location of the Cyanite HTTP API.
