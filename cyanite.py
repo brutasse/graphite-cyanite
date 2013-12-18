@@ -12,6 +12,8 @@ METRIC_URL = '{0}/metrics'.format(settings.CYANITE_URL)
 
 
 class CyaniteReader(object):
+    __slots__ = ('path',)
+
     def __init__(self, path):
         self.path = path
 
