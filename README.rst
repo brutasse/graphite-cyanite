@@ -4,8 +4,8 @@ Graphite-Cyanite
 A plugin for using graphite-web with the cassandra-based Cyanite storage
 backend.
 
-**Currently only works with @brutasse's graphite-web fork located at
-https://github.com/brutasse/graphite-web/tree/feature/store-backend**.
+**Requires at least Graphite-web 0.10.X, which is currently unreleased. You'll
+need to install it from source.**
 
 Installation
 ------------
