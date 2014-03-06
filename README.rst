@@ -4,7 +4,7 @@ Graphite-Cyanite
 A plugin for using graphite with the cassandra-based Cyanite storage
 backend.
 
-**Requires `Graphite-API`_ or Graphite-web 0.10.X, which are currently both
+**Requires** `Graphite-API`_ **or Graphite-web 0.10.X, which are currently both
 unreleased. You'll need to install from source.**
 
 .. _Graphite-API: https://github.com/brutasse/graphite-api
