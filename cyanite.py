@@ -1,14 +1,16 @@
 import time
 
-from django.conf import settings
-
-from graphite.intervals import Interval, IntervalSet
-from graphite.node import LeafNode, BranchNode
+try:
+    from graphite_api.intervals import Interval, IntervalSet
+    from graphite_api.node import LeafNode, BranchNode
+except ImportError:
+    from graphite.intervals import Interval, IntervalSet
+    from graphite.node import LeafNode, BranchNode
 
 import requests
 
-PATH_URL = '{0}/paths'.format(settings.CYANITE_URL)
-METRIC_URL = '{0}/metrics'.format(settings.CYANITE_URL)
+PATH_URL = None
+METRIC_URL = None
 
 
 class CyaniteReader(object):
@@ -32,6 +34,17 @@ class CyaniteReader(object):
 
 
 class CyaniteFinder(object):
+    def __init__(self, config=None):
+        global PATH_URL
+        global METRIC_URL
+        if config is not None:
+            url = config['cyanite']['url'].strip('/')
+        else:
+            from django.conf import settings
+            url = settings.CYANITE_URL
+        PATH_URL = '{0}/paths'.format(url)
+        METRIC_URL = '{0}/metrics'.format(url)
+
     def find_nodes(self, query):
         paths = requests.get(PATH_URL, params={'query': query.pattern}).json()
         for path in paths:
