@@ -23,6 +23,8 @@ class CyaniteReader(object):
         data = requests.get(METRIC_URL, params={'path': self.path,
                                                 'from': start_time,
                                                 'to': end_time}).json()
+        if 'error' in data:
+            return (start_time, end_time, end_time - start_time), []
         time_info = data['from'], data['to'], data['step']
         return time_info, data['series'][self.path]
 

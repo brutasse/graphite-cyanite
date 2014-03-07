@@ -46,6 +46,9 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.2.1** (2014-03-07): Prevent breaking graphite rendering when no data is
+  returned from cyanite.
+
 * **0.2.0** (2014-03-06): Graphite-API compatibility.
 
 * **0.1.0** (2013-12-08): initial version.
