@@ -28,7 +28,7 @@ Using with graphite-api
 In your graphite-api config file::
 
     cyanite:
-      url: http://cyanite-host
+      url: http://cyanite-host:port
     finders:
       - cyanite.CyaniteFinder
 
