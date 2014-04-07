@@ -68,6 +68,9 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.3.0** (2014-04-07): Change configuration syntax to allow multiple-node
+  cyanite setups.
+
 * **0.2.1** (2014-03-07): Prevent breaking graphite rendering when no data is
   returned from cyanite.
 
