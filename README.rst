@@ -28,7 +28,8 @@ Using with graphite-api
 In your graphite-api config file::
 
     cyanite:
-      url: http://cyanite-host:port
+      urls:
+        - http://cyanite-host:port
     finders:
       - cyanite.CyaniteFinder
 
@@ -41,9 +42,24 @@ In your graphite's ``local_settings.py``::
         'cyanite.CyaniteFinder',
     )
 
-    CYANITE_URL = 'http://host:port'
+    CYANITE_URLS = (
+        'http://host:port',
+    )
 
-Where ``host:port`` is the location of the Cyanite HTTP API.
+Where ``host:port`` is the location of the Cyanite HTTP API. If you run
+Cyanite on multiple hosts, specify all of them to load-balance traffic::
+
+    # Graphite-API
+    cyanite:
+      urls:
+        - http://host1:port
+        - http://host2:port
+
+    # Graphite-web
+    CYANITE_URLS = (
+        'http://host1:port',
+        'http://host2:port',
+    )
 
 See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 

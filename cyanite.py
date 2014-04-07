@@ -1,3 +1,4 @@
+import itertools
 import time
 
 try:
@@ -9,8 +10,23 @@ except ImportError:
 
 import requests
 
-PATH_URL = None
-METRIC_URL = None
+
+class URLs(object):
+    def __init__(self, hosts):
+        self.iterator = itertools.cycle(hosts)
+
+    @property
+    def host(self):
+        return next(self.iterator)
+
+    @property
+    def paths(self):
+        return '{0}/paths'.format(self.host)
+
+    @property
+    def metrics(self):
+        return '{0}/metrics'.format(self.host)
+urls = None
 
 
 class CyaniteReader(object):
@@ -20,9 +36,9 @@ class CyaniteReader(object):
         self.path = path
 
     def fetch(self, start_time, end_time):
-        data = requests.get(METRIC_URL, params={'path': self.path,
-                                                'from': start_time,
-                                                'to': end_time}).json()
+        data = requests.get(urls.metrics, params={'path': self.path,
+                                                  'from': start_time,
+                                                  'to': end_time}).json()
         if 'error' in data:
             return (start_time, end_time, end_time - start_time), []
         time_info = data['from'], data['to'], data['step']
@@ -37,18 +53,20 @@ class CyaniteReader(object):
 
 class CyaniteFinder(object):
     def __init__(self, config=None):
-        global PATH_URL
-        global METRIC_URL
+        global urls
         if config is not None:
-            url = config['cyanite']['url'].strip('/')
+            if 'urls' in config['cyanite']:
+                urls = config['cyanite']['urls']
+            else:
+                urls = [config['cyanite']['url'].strip('/')]
         else:
             from django.conf import settings
-            url = settings.CYANITE_URL
-        PATH_URL = '{0}/paths'.format(url)
-        METRIC_URL = '{0}/metrics'.format(url)
+            urls = getattr(settings, 'CYANITE_URLS', [settings.CYANITE_URL])
+        urls = URLs(urls)
 
     def find_nodes(self, query):
-        paths = requests.get(PATH_URL, params={'query': query.pattern}).json()
+        paths = requests.get(urls.paths,
+                             params={'query': query.pattern}).json()
         for path in paths:
             if path['leaf']:
                 yield LeafNode(path['path'], CyaniteReader(path['path']))
