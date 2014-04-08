@@ -2,8 +2,9 @@ language: python
 python: 3.3
 
 env:
-  - TOXENV=graphite-api
-  - TOXENV=graphite-web
+  - TOXENV=py26
+  - TOXENV=py27
+  - TOXENV=py33
   - TOXENV=lint
 
 before_install:
