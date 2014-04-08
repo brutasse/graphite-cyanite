@@ -1,6 +1,10 @@
 Graphite-Cyanite
 ================
 
+.. image:: https://travis-ci.org/brutasse/graphite-cyanite.svg?branch=master
+   :alt: Build Status
+   :target: https://travis-ci.org/brutasse/graphite-cyanite
+
 A plugin for using graphite with the cassandra-based Cyanite storage
 backend.
 
