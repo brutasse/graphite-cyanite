@@ -72,6 +72,8 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.4.1** (2014-04-10): Fix for multiple fetches when the results are empty.
+
 * **0.4.0** (2014-04-10): Ability to fetch multiple paths at a time instead of
   sequentially (requires graphite-api).
 
