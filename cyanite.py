@@ -11,6 +11,10 @@ except ImportError:
 import requests
 
 
+class CyaniteLeafNode(LeafNode):
+    __fetch_multi__ = 'cyanite'
+
+
 class URLs(object):
     def __init__(self, hosts):
         self.iterator = itertools.cycle(hosts)
@@ -52,6 +56,8 @@ class CyaniteReader(object):
 
 
 class CyaniteFinder(object):
+    __fetch_multi__ = 'cyanite'
+
     def __init__(self, config=None):
         global urls
         if config is not None:
@@ -69,6 +75,17 @@ class CyaniteFinder(object):
                              params={'query': query.pattern}).json()
         for path in paths:
             if path['leaf']:
-                yield LeafNode(path['path'], CyaniteReader(path['path']))
+                yield CyaniteLeafNode(path['path'],
+                                      CyaniteReader(path['path']))
             else:
                 yield BranchNode(path['path'])
+
+    def fetch_multi(self, nodes, start_time, end_time):
+        paths = [node.path for node in nodes]
+        data = requests.get(urls.metrics, params={'path': paths,
+                                                  'from': start_time,
+                                                  'to': end_time}).json()
+        if 'error' in data:
+            return (start_time, end_time, end_time - start_time), []
+        time_info = data['from'], data['to'], data['step']
+        return time_info, data['series']

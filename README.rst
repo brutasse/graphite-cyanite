@@ -72,6 +72,9 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.4.0** (2014-04-10): Ability to fetch multiple paths at a time instead of
+  sequentially (requires graphite-api).
+
 * **0.3.0** (2014-04-07): Change configuration syntax to allow multiple-node
   cyanite setups.
 

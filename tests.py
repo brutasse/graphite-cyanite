@@ -47,3 +47,28 @@ class CyaniteTests(TestCase):
                                     params={'to': 100,
                                             'path': 'foo.bar',
                                             'from': 50})
+
+    @patch('requests.get')
+    def test_fetch_multi(self, get):
+        get.return_value.json.return_value = [
+            {'path': 'foo.baz',
+             'leaf': 1},
+            {'path': 'foo.bar',
+             'leaf': 1},
+        ]
+
+        finder = CyaniteFinder({'cyanite': {'url': 'http://host:8080'}})
+        query = FindQuery('foo.*', 50, 100)
+        nodes = list(finder.find_nodes(query))
+
+        get.reset_mock()
+        get.return_value.json.return_value = {
+            'from': 50,
+            'to': 100,
+            'step': 1,
+            'series': {'foo.bar': list(range(50)),
+                       'foo.baz': list(range(50))},
+        }
+
+        time_info, series = finder.fetch_multi(nodes, 50, 100)
+        self.assertEqual(set(series.keys()), set(['foo.bar', 'foo.baz']))
