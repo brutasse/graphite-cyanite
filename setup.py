@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='cyanite',
-    version='0.4.1',
+    version='0.4.2',
     url='https://github.com/brutasse/graphite-cyanite',
     license='BSD',
     author=u'Bruno Renié',

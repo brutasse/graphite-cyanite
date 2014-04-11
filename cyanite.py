@@ -67,7 +67,9 @@ class CyaniteFinder(object):
                 urls = [config['cyanite']['url'].strip('/')]
         else:
             from django.conf import settings
-            urls = getattr(settings, 'CYANITE_URLS', [settings.CYANITE_URL])
+            urls = getattr(settings, 'CYANITE_URLS')
+            if not urls:
+                urls = [settings.CYANITE_URL]
         urls = URLs(urls)
 
     def find_nodes(self, query):
