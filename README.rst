@@ -72,6 +72,9 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.4.3** (2014-05-15): Fix a KeyError when no data is returned by cyanite
+  for a given path.
+
 * **0.4.2** (2014-04-11): Fix graphite-web compatibility when using
   ``settings.CYANITE_URLS``.
 
