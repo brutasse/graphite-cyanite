@@ -31,6 +31,7 @@ class URLs(object):
     def metrics(self):
         return '{0}/metrics'.format(self.host)
 urls = None
+urllength = 8000
 
 
 class CyaniteReader(object):
@@ -60,11 +61,14 @@ class CyaniteFinder(object):
 
     def __init__(self, config=None):
         global urls
+        global urllength
         if config is not None:
             if 'urls' in config['cyanite']:
                 urls = config['cyanite']['urls']
             else:
                 urls = [config['cyanite']['url'].strip('/')]
+            if 'urllength' in config['cyanite']:
+                urllength = config['cyanite']['urllength']
         else:
             from django.conf import settings
             urls = getattr(settings, 'CYANITE_URLS')
@@ -83,11 +87,32 @@ class CyaniteFinder(object):
                 yield BranchNode(path['path'])
 
     def fetch_multi(self, nodes, start_time, end_time):
+        def chunk(nodelist, length):
+            tmp = []
+            r = 0
+            for f in nodelist:
+                if r + 6 + len(str(f)) > length:
+                    yield tmp
+                    tmp = []
+                    r = 0
+                else:
+                    tmp.append(f)
+                    r += 6 + len(str(f))
+            yield tmp
+
         paths = [node.path for node in nodes]
-        data = requests.get(urls.metrics, params={'path': paths,
-                                                  'from': start_time,
-                                                  'to': end_time}).json()
-        if 'error' in data:
-            return (start_time, end_time, end_time - start_time), {}
+        data = {}
+        for pathlist in chunk(paths, urllength):
+            tmpdata = requests.get(urls.metrics, params={'path': paths,
+                                                         'from': start_time,
+                                                         'to': end_time}).json()
+            if 'error' in tmpdata:
+                return (start_time, end_time, end_time - start_time), {}
+
+            if 'series' in data:
+                data['series'].update(tmpdata['series'])
+            else:
+                data = tmpdata
+
         time_info = data['from'], data['to'], data['step']
         return time_info, data['series']
