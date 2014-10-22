@@ -75,5 +75,5 @@ class CyaniteTests(TestCase):
 
     def test_chunk(self):
         mylist = range(1000, 9999)
-        finder = CyaniteFinder({'cyanite': {'url': 'http://host:8080', 'urllength': 4}})
+        finder = CyaniteFinder({'cyanite': {'url': 'http://host:8080'}})
         self.assertEqual(len(list(finder.chunk(mylist, 4))), 9000)
