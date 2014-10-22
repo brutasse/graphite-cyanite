@@ -11,6 +11,24 @@ except ImportError:
 import requests
 
 
+def chunk(nodelist, length):
+    chunklist = []
+    linelength = 0
+    for node in nodelist:
+        # the magic number 6 is because the nodes list gets padded
+        # with '&path=' in the resulting request
+        nodelength = len(str(node)) + 6
+
+        if linelength + nodelength > length:
+            yield chunklist
+            chunklist = [node]
+            linelength = nodelength
+        else:
+            chunklist.append(node)
+            linelength += nodelength
+    yield chunklist
+
+
 class CyaniteLeafNode(LeafNode):
     __fetch_multi__ = 'cyanite'
 
@@ -86,28 +104,11 @@ class CyaniteFinder(object):
             else:
                 yield BranchNode(path['path'])
 
-    def chunk(self, nodelist, length):
-        chunklist = []
-        linelength = 0
-        for node in nodelist:
-            # the magic number 6 is because the nodes list gets padded
-            # with '&path=' in the resulting request
-            nodelength = len(str(node)) + 6
-
-            if linelength + nodelength > length:
-                yield chunklist
-                chunklist = [node]
-                linelength = nodelength
-            else:
-                chunklist.append(node)
-                linelength += nodelength
-        yield chunklist
-
     def fetch_multi(self, nodes, start_time, end_time):
 
         paths = [node.path for node in nodes]
         data = {}
-        for pathlist in self.chunk(paths, urllength):
+        for pathlist in chunk(paths, urllength):
             tmpdata = requests.get(urls.metrics,
                                    params={'path': pathlist,
                                            'from': start_time,

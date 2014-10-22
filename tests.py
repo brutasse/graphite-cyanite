@@ -1,7 +1,7 @@
 from mock import patch
 from unittest import TestCase
 
-from cyanite import CyaniteFinder
+from cyanite import CyaniteFinder, chunk
 from graphite_api.storage import FindQuery
 
 
@@ -75,5 +75,4 @@ class CyaniteTests(TestCase):
 
     def test_chunk(self):
         mylist = range(1000, 9999)
-        finder = CyaniteFinder({'cyanite': {'url': 'http://host:8080'}})
-        self.assertEqual(len(list(finder.chunk(mylist, 4))), 9000)
+        self.assertEqual(len(list(chunk(mylist, 4))), 9000)
