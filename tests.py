@@ -72,3 +72,8 @@ class CyaniteTests(TestCase):
 
         time_info, series = finder.fetch_multi(nodes, 50, 100)
         self.assertEqual(set(series.keys()), set(['foo.bar', 'foo.baz']))
+
+    def test_chunk(self):
+        mylist = range(1000, 9999)
+        finder = CyaniteFinder({'cyanite': {'url': 'http://host:8080', 'urllength': 4}})
+        self.assertEqual(len(list(finder.chunk(mylist, 4))), 9000)

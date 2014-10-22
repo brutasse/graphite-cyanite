@@ -86,23 +86,28 @@ class CyaniteFinder(object):
             else:
                 yield BranchNode(path['path'])
 
+    def chunk(self, nodelist, length):
+        chunklist = []
+        linelength = 0
+        for node in nodelist:
+            # the magic number 6 is because the nodes list gets padded
+            # with '&path=' in the resulting request
+            nodelength = len(str(node)) + 6
+
+            if linelength + nodelength > length:
+                yield chunklist
+                chunklist = [node]
+                linelength = nodelength
+            else:
+                chunklist.append(node)
+                linelength += nodelength
+        yield chunklist
+
     def fetch_multi(self, nodes, start_time, end_time):
-        def chunk(nodelist, length):
-            tmp = []
-            r = 0
-            for f in nodelist:
-                if r + 6 + len(str(f)) > length:
-                    yield tmp
-                    tmp = []
-                    r = 0
-                else:
-                    tmp.append(f)
-                    r += 6 + len(str(f))
-            yield tmp
 
         paths = [node.path for node in nodes]
         data = {}
-        for pathlist in chunk(paths, urllength):
+        for pathlist in self.chunk(paths, urllength):
             tmpdata = requests.get(urls.metrics,
                                    params={'path': pathlist,
                                            'from': start_time,
