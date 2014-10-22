@@ -92,6 +92,7 @@ class CyaniteFinder(object):
             urls = getattr(settings, 'CYANITE_URLS')
             if not urls:
                 urls = [settings.CYANITE_URL]
+            urllength = getattr(settings, 'CYANITE_URL_LENGTH', urllength)
         urls = URLs(urls)
 
     def find_nodes(self, query):

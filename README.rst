@@ -72,6 +72,9 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.4.4** (2014-10-22): Chunk cyanite requests if they end up being too long
+  for cyanite.
+
 * **0.4.3** (2014-05-15): Fix a KeyError when no data is returned by cyanite
   for a given path.
 
