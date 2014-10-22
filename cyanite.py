@@ -103,7 +103,7 @@ class CyaniteFinder(object):
         paths = [node.path for node in nodes]
         data = {}
         for pathlist in chunk(paths, urllength):
-            tmpdata = requests.get(urls.metrics, params={'path': paths,
+            tmpdata = requests.get(urls.metrics, params={'path': pathlist,
                                                          'from': start_time,
                                                          'to': end_time}).json()
             if 'error' in tmpdata:
