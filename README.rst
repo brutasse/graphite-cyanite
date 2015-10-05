@@ -72,6 +72,9 @@ See `pyr/cyanite`_ for running the Cyanite carbon daemon.
 Changelog
 ---------
 
+* **0.4.6** (2015-10-05): Return arbitrarily large intervals in
+  ``get_intervals()``.
+
 * **0.4.5** (2015-05-05): Handle path matches that return no data.
 
 * **0.4.4** (2014-10-22): Chunk cyanite requests if they end up being too long
