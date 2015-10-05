@@ -71,9 +71,7 @@ class CyaniteReader(object):
 
     def get_intervals(self):
         # TODO use cyanite info
-        start = time.time() - 3600 * 2
-        end = max(start, time.time())
-        return IntervalSet([Interval(start, end)])
+        return IntervalSet([Interval(0, int(time.time()))])
 
 
 class CyaniteFinder(object):
