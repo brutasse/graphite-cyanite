@@ -17,7 +17,7 @@ Graphite-web 0.10.X is currently unreleased. You'll need to install from
 source.
 
 .. _Graphite-API: https://github.com/brutasse/graphite-api
-.. _documentation: http://graphite-api.readthedocs.org/en/latest/
+.. _documentation: https://graphite-api.readthedocs.io/en/latest/
 
 Installation
 ------------
